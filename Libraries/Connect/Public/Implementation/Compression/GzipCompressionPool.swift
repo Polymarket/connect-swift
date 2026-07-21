@@ -13,7 +13,9 @@
 // limitations under the License.
 
 import Foundation
+#if canImport(zlib)
 import zlib
+#endif
 
 /// Compression pool that handles gzip compression/decompression.
 public struct GzipCompressionPool: Sendable {
@@ -22,6 +24,10 @@ public struct GzipCompressionPool: Sendable {
     public enum GzipError: Error {
         case failedToInitialize
         case failedToFinish
+        /// Thrown on platforms where `zlib` is unavailable (e.g. the non-Darwin Swift
+        /// toolchain used for Android/Skip host builds), so gzip callers fail loudly
+        /// rather than the whole module failing to compile.
+        case unsupportedPlatform
     }
 }
 
@@ -30,6 +36,7 @@ extension GzipCompressionPool: CompressionPool {
         return "gzip"
     }
 
+#if canImport(zlib)
     public func compress(data: Data) throws -> Data {
         if data.isEmpty || data.isGzipped() {
             return data
@@ -135,6 +142,15 @@ extension GzipCompressionPool: CompressionPool {
         output.count = Int(stream.total_out)
         return output
     }
+#else
+    public func compress(data: Data) throws -> Data {
+        throw GzipError.unsupportedPlatform
+    }
+
+    public func decompress(data: Data) throws -> Data {
+        throw GzipError.unsupportedPlatform
+    }
+#endif
 }
 
 private extension Data {
