@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/OpenSwiftUIProject/OpenCombine.git",
       "state" : {
-        "revision" : "63aef318cb3a853bcb8d774cce15f4dcb1ccdfe4",
-        "version" : "0.15.1"
+        "revision" : "fa6ba53f863bba054a1ef9a6088615d0d34528ab",
+        "version" : "0.17.0"
       }
     },
     {

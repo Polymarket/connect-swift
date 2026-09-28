@@ -65,7 +65,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/OpenSwiftUIProject/OpenCombine.git",
-            exact: "0.15.1"
+            from: "0.17.0"
         ),
     ],
     targets: [
